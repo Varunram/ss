@@ -8,6 +8,11 @@ import (
   qrcode "github.com/skip2/go-qrcode"
 )
 
+// TODO: add questions which a user can answer and use the answers to encrypt the secret phrase
+// TODO: split the secret in such a way that the data is easily typable without any problems.
+// Maybe bech32 or base58 would be a good candidate.
+// TODO: remove qr codes
+// TODO: add encrpytion scheme which would accept answers for a set of questions
 func main() {
   // sample pubkey: 2NFMAdgT7tWdLYbMGhxBvnYQ8h3nLzHDNbq
   // sample privkey: cRGgZNBv9iAokqj64YAzu5PUwydxC272yczQr56Y9KiqrrNvkNR7
