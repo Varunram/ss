@@ -68,5 +68,31 @@ func main() {
       log.Println(err)
     }
     log.Println("RECONSTRUCTED: ", x)
+
+  case "encrypt":
+    if len(os.Args) < 3 {
+      log.Fatal("USAGE: ./ss encrypt secret(s)")
+    }
+    var inputString string
+    // this would ideally be a bip39 mnemonic
+    for i := 2 ; i < len(os.Args) ; i ++ {
+      inputString = inputString + " " + os.Args[i]
+    }
+    encoded, err := EncryptQuestions(inputString)
+    if err != nil {
+      log.Println("ERROR: ", err)
+
+    }
+    log.Println("ENCODED: ", encoded)
+
+  case "decrypt":
+    if len(os.Args) < 3 {
+      log.Fatal("USAGE: ./ss decrypt passphrase")
+    }
+    secret, err := DecryptQuestions(os.Args[2])
+    if err != nil {
+      log.Println("ERROR: ", err)
+    }
+    log.Println("SECRET PHRASE: ", secret)
   }
 }
