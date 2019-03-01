@@ -4,12 +4,14 @@ import (
 	//"log"
 	"bytes"
 	"crypto/rand"
+	xrand "math/rand"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
 	"math"
 	"math/big"
 	"strings"
+	"time"
 )
 
 var prime *big.Int
@@ -142,4 +144,32 @@ func evaluatePolynomial(polynomial []*big.Int, value *big.Int) *big.Int {
 	}
 
 	return result
+}
+
+func GetRandomString(n int) string {
+	// random string implementation courtesy: icza
+	// https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+	const (
+		letterBytes   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		letterIdxBits = 6                    // 6 bits to represent a letter index
+		letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+		letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	)
+
+	var src = xrand.NewSource(time.Now().UnixNano())
+	b := make([]byte, n)
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = src.Int63(), letterIdxMax
+		}
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
+	return string(b)
 }

@@ -4,8 +4,7 @@ import (
   "os"
   "log"
   "strconv"
-
-  qrcode "github.com/skip2/go-qrcode"
+  "io/ioutil"
 )
 
 // TODO: add questions which a user can answer and use the answers to encrypt the secret phrase
@@ -44,18 +43,22 @@ func main() {
       log.Println(err)
     }
 
+    // encrypt using random alphanumeric string
     for i, elem := range a {
       log.Println("SECRET: ", i+1 , elem)
-    }
-
-    for i, elem := range a {
-      sI := strconv.Itoa(i+1)
-      err := qrcode.WriteFile(elem, qrcode.Medium, 256, sI + ".png")
+      // encrypt using a random string and print the random string for future use.
+      rString := GetRandomString(6)
+      byteData, err := Encrypt([]byte(elem), rString)
+      if err != nil {
+        log.Println("ERR: ", err)
+        log.Fatal(err)
+      }
+      // implementation needs to store this to a file and decrypt this using the random string
+      err = ioutil.WriteFile(strconv.Itoa(i+1) + ".secret", byteData, os.ModePerm)
       if err != nil {
         log.Fatal(err)
       }
     }
-
   case "reconstruct":
     if len(os.Args) < 4 {
       log.Fatal("USAGE: reconstruct <secret1> <secret2>\nReconstruct the secret using the Shamir Secret Sharing Scheme")
