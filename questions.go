@@ -192,6 +192,7 @@ func DecryptQuestions(encoded string) (string, error) {
 
 	hrp, decoded, err := bech32.Decode(encoded)
 	if err != nil {
+		log.Println("DECODED: ", decoded)
 		return "", err
 	}
 	if hrp != "bithyve" {

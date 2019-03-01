@@ -54,6 +54,7 @@ func main() {
         log.Fatal(err)
       }
       // implementation needs to store this to a file and decrypt this using the random string
+      log.Println("Lenght of encrpyted share: ", len(byteData))
       err = ioutil.WriteFile(strconv.Itoa(i+1) + ".secret", byteData, os.ModePerm)
       if err != nil {
         log.Fatal(err)
